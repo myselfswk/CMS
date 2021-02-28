@@ -4,8 +4,15 @@ import { Item, Input, Icon } from 'native-base';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 
 class Profile extends React.Component {
+
+    state = {
+        user: {},
+        isData: false,
+        loggedInUser: {},
+    }
 
     signOutFunc = () => {
         auth()
@@ -16,7 +23,44 @@ class Profile extends React.Component {
         this.props.navigation.navigate('Home');
     }
 
+    componentDidMount() {
+        auth().onAuthStateChanged((user) => {
+            if (user) {
+                database().ref('users/student').once('value', (data) => {
+                    setTimeout(() => {
+                        for (var key in data.val()) {
+                            if (data.val()[key].email === user.email) {
+                                this.setState({
+                                    loggedInUser: data.val()[key],
+                                    isData: true
+                                })
+                            }
+                        }
+                    }, 1000);
+                })
+            }
+        })
+
+        auth().onAuthStateChanged((user) => {
+            if (user) {
+                database().ref('users/company').once('value', (data) => {
+                    setTimeout(() => {
+                        for (var key in data.val()) {
+                            if (data.val()[key].email === user.email) {
+                                this.setState({
+                                    loggedInUser: data.val()[key],
+                                    isData: true
+                                })
+                            }
+                        }
+                    }, 1000);
+                })
+            }
+        })
+    }
+
     render() {
+        const { isData, loggedInUser } = this.state;
         return (
             <View style={{ width: '100%', alignItems: 'center' }}>
                 <Text style={styles.profileH}>Profile</Text>
@@ -27,25 +71,29 @@ class Profile extends React.Component {
                     />
                 </View>
                 <View >
-                    <View style={styles.profileBody}>
-                        <Item rounded style={{ marginTop: 20, borderRadius: 10, borderRadius: 15, borderColor: '#DE1F26', borderWidth: 5 }}>
-                            <Input style={{ color: 'red', backgroundColor: 'white', fontWeight: 'bold', fontSize: 20 }} />
-                        </Item>
-                        <Item rounded style={{ marginTop: 20, borderRadius: 10, borderRadius: 15, borderColor: '#DE1F26', borderWidth: 5 }}>
-                            <Input style={{ color: 'red', backgroundColor: 'white', fontWeight: 'bold', fontSize: 20 }} />
-                        </Item>
-                        <Item rounded style={{ marginTop: 20, borderRadius: 10, borderRadius: 15, borderColor: '#DE1F26', borderWidth: 5 }}>
-                            <Input style={{ color: 'red', backgroundColor: 'white', fontWeight: 'bold', fontSize: 20 }} />
-                        </Item>
-                        <TouchableOpacity style={styles.btnView} onPress={() => this.signOutFunc()}>
-                            <View style={{flexDirection: 'row'}}>
-                                <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 20, marginRight: 10 }}>
-                                    SIGN OUT
+                    {
+                        isData ?
+                            <View style={styles.profileBody}>
+                                <Item rounded style={{ marginTop: 20, borderRadius: 10, borderRadius: 15, borderColor: '#DE1F26', borderWidth: 5 }}>
+                                    <Input style={{ color: 'red', backgroundColor: 'white', fontWeight: 'bold', fontSize: 20 }} value={loggedInUser.name} />
+                                </Item>
+                                <Item rounded style={{ marginTop: 20, borderRadius: 10, borderRadius: 15, borderColor: '#DE1F26', borderWidth: 5 }}>
+                                    <Input style={{ color: 'red', backgroundColor: 'white', fontWeight: 'bold', fontSize: 20 }} value={loggedInUser.email} />
+                                </Item>
+                                <Item rounded style={{ marginTop: 20, borderRadius: 10, borderRadius: 15, borderColor: '#DE1F26', borderWidth: 5 }}>
+                                    <Input style={{ color: 'red', backgroundColor: 'white', fontWeight: 'bold', fontSize: 20 }} value={loggedInUser.password} />
+                                </Item>
+                                <TouchableOpacity style={styles.btnView} onPress={() => this.signOutFunc()}>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 20, marginRight: 10 }}>
+                                            SIGN OUT
                                 </Text>
-                                <Icon name='logout' type={'AntDesign'} style={{ color: "#fff" }} />
+                                        <Icon name='logout' type={'AntDesign'} style={{ color: "#fff" }} />
+                                    </View>
+                                </TouchableOpacity>
                             </View>
-                        </TouchableOpacity>
-                    </View>
+                        : null
+                    }
                 </View>
             </View>
         );

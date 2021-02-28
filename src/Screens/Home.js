@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, BackHandler, Alert } from 'react-native';
 import { Icon } from 'native-base';
 import auth from "@react-native-firebase/auth";
 
@@ -7,12 +7,29 @@ var loginImage = require('../assets/CMS-Logo.jpg');
 
 export default class Home extends Component {
 
+    backAction = () => {
+        Alert.alert("College Management System", "Are you sure you want to Close App?", [
+            {
+                text: "Cancel",
+                onPress: () => null,
+                style: "cancel"
+            },
+            { text: "YES", onPress: () => BackHandler.exitApp() }
+        ]);
+        return true;
+    };
+
     componentDidMount() {
         auth().onAuthStateChanged((user) => {
             if (user) {
                 this.props.navigation.navigate('Dashboard');
             }
         })
+
+        this.backHandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            this.backAction
+        );
     }
 
     render() {

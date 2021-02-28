@@ -9,7 +9,10 @@ import database from '@react-native-firebase/database';
 export default class Student extends Component {
 
     state = {
-        students: []
+        students: [],
+        isData: false,
+        loggedInUser: {},
+        user: {}
     }
     componentDidMount() {
         database().ref('users/student').once('value', data => {
@@ -21,10 +24,27 @@ export default class Student extends Component {
                 students: arr
             })
         })
+
+        auth().onAuthStateChanged((user) => {
+            if (user) {
+                database().ref('users/company').once('value', (data) => {
+                    setTimeout(() => {
+                        for (var key in data.val()) {
+                            if (data.val()[key].email === user.email) {
+                                this.setState({
+                                    loggedInUser: data.val()[key],
+                                    isData: true
+                                })
+                            }
+                        }
+                    }, 1000);
+                })
+            }
+        })
     }
 
     list = () => {
-        const { students } = this.state;
+        const { students, loggedInUser } = this.state;
         return (
             students.map((student, id) => {
                 return (
@@ -34,11 +54,15 @@ export default class Student extends Component {
                                 <Text style={{ fontWeight: 'bold', color: '#1C468A', fontSize: 18, fontFamily: 'Lemon' }}>{student.name}</Text>
                                 <Text style={{ fontSize: 18 }}>{student.email}</Text>
                                 <Text style={{ fontSize: 18 }}></Text>
-                                <TouchableOpacity style={styles.btnView}>
-                                    <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
-                                        Hire Me
-                                    </Text>
-                                </TouchableOpacity>
+                                {
+                                    loggedInUser.accountType === 'com' ?
+                                        <TouchableOpacity style={styles.btnView}>
+                                            <Text style={{ fontWeight: 'bold', fontSize: 20, color: "#fff" }}>
+                                                Hire Me
+                                            </Text>
+                                        </TouchableOpacity>
+                                        : null
+                                }
                             </View>
                         </ListItem>
                     </List>
@@ -49,18 +73,20 @@ export default class Student extends Component {
 
     render() {
         return (
-            <ScrollView>
-                <Container>
-                    <View style={{ flexDirection: 'row', marginTop: 10 }}>
-                        <Text
-                            style={{ fontFamily: 'Momcake', color: '#FB6527', fontWeight: "700", fontSize: 30 }}
-                        >Hire New Employees</Text>
-                    </View>
-                    <View>
-                        {this.list()}
-                    </View>
-                </Container>
-            </ScrollView>
+            <>
+                <View style={{ marginTop: 10 }}>
+                    <Text
+                        style={{ textAlign: 'center', fontFamily: 'Momcake', color: '#FB6527', fontWeight: "700", fontSize: 30 }}
+                    >Hire New Employees</Text>
+                </View>
+                <ScrollView>
+                    <Container>
+                        <View>
+                            {this.list()}
+                        </View>
+                    </Container>
+                </ScrollView>
+            </>
         );
     }
 }

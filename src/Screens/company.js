@@ -15,6 +15,8 @@ class Company extends React.Component {
     state = {
         postjob: '',
         isData: false,
+        loggedInUser: {},
+        user: {}
     }
 
     redToPost = () => {
@@ -38,10 +40,27 @@ class Company extends React.Component {
                 }, 1000);
             })
         this.setState({});
+
+        auth().onAuthStateChanged((user) => {
+            if (user) {
+                database().ref('users/student').once('value', (data) => {
+                    setTimeout(() => {
+                        for (var key in data.val()) {
+                            if (data.val()[key].email === user.email) {
+                                this.setState({
+                                    loggedInUser: data.val()[key],
+                                    isData: true
+                                })
+                            }
+                        }
+                    }, 1000);
+                })
+            }
+        })
     }
 
     postjobFunc = () => {
-        const { postjob, isData } = this.state;
+        const { postjob, isData, loggedInUser } = this.state;
         return (
             isData ? postjob.map((postjob, id) => {
                 return (
@@ -66,11 +85,15 @@ class Company extends React.Component {
                             <Text style={{ fontWeight: '700' }}>Email Address: </Text>
                             <Text style={{ flex: 1, flexWrap: 'wrap' }}>{postjob.email} </Text>
                         </View>
-                        <TouchableOpacity style={styles.btnView}>
-                            <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
-                                Apply Now
-                            </Text>
-                        </TouchableOpacity>
+                        {
+                            loggedInUser.accountType === "std" ?
+                                <TouchableOpacity style={styles.btnView}>
+                                    <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
+                                        Apply Now
+                                    </Text>
+                                </TouchableOpacity>
+                            : null
+                        }
 
                     </View>
                 );
