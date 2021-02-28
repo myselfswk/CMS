@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "621459765805",
+    "project_id": "college-management-system-wk",
+    "storage_bucket": "college-management-system-wk.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:621459765805:android:0c2be4ca891ca9b20096a4",
+        "android_client_info": {
+          "package_name": "com.cms"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "621459765805-mmdtkapk2qad0mvhrfrh2ld2g9c65l7k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALtcKNjVbdTJdp4EzjPyf1Mr21ZmwkguU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "621459765805-mmdtkapk2qad0mvhrfrh2ld2g9c65l7k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
