@@ -39,7 +39,8 @@ class Register extends React.Component {
                             .push({
                                 email: this.state.email,
                                 name: this.state.name,
-                                password: this.state.password
+                                password: this.state.password,
+                                accountType: this.state.accType
                             })
                             .then((res) => console.log(res))
                     })
@@ -57,7 +58,8 @@ class Register extends React.Component {
                         .push({
                             email: this.state.email,
                             name: this.state.name,
-                            password: this.state.password
+                            password: this.state.password,
+                            accountType: this.state.accType
                         })
                         .then((res) => console.log(res))
                 })

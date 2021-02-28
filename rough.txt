@@ -1,6 +1,16 @@
+//from profile.js
+
+<Tab tabStyle={{ width: 100 }} heading={<TabHeading style={styles.tabDashboard}>
+                        <Text style={styles.tabText}>
+                            <Icon name='user-o' style={{ color: '#fff' }} type='FontAwesome' />
+                        </Text></TabHeading>}>
+                        <Profile navigation = {props.navigation} />
+</Tab>
+
+
 import React from 'react';
 import { StyleSheet, Text, View, Image, Alert } from "react-native";
-import { Item, Input, Icon } from 'native-base';
+import { Item, Input } from 'native-base';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import auth from '@react-native-firebase/auth';
@@ -38,12 +48,9 @@ class Profile extends React.Component {
                             <Input style={{ color: 'red', backgroundColor: 'white', fontWeight: 'bold', fontSize: 20 }} />
                         </Item>
                         <TouchableOpacity style={styles.btnView} onPress={() => this.signOutFunc()}>
-                            <View style={{flexDirection: 'row'}}>
-                                <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 20, marginRight: 10 }}>
-                                    SIGN OUT
-                                </Text>
-                                <Icon name='logout' type={'AntDesign'} style={{ color: "#fff" }} />
-                            </View>
+                            <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 20 }}>
+                                SIGN OUT
+                            </Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -100,3 +107,4 @@ const styles = StyleSheet.create({
 });
 
 export default Profile;
+

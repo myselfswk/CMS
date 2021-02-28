@@ -84,7 +84,7 @@ var styles = StyleSheet.create({
     },
     input: {
         width: '100%',
-        margin: 10,
+        margin: 20,
         color: 'blue'
     },
     btnReg: {

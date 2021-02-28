@@ -6,7 +6,7 @@ import Home from "../Screens/Home";
 import Register from '../Screens/Register';
 import Login from '../Screens/Login';
 import Dashboard from '../Screens/Dashboard';
-import Profile from '../Screens/profile';
+import PostAJob from "../Screens/PostAJob";
 
 const Stack = createStackNavigator();
 
@@ -19,6 +19,7 @@ function Navigation() {
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Dashboard" component={Dashboard} options={{headerShown: null}} />
+        <Stack.Screen name="PostAJob" component={PostAJob} />
       </Stack.Navigator>
     </NavigationContainer>
   );
