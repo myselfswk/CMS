@@ -3,6 +3,6 @@
  
  A Porject For Saylani Mass IT Training Center
  
- (Working On UI(Not Proper UI) & apk file to make it better)
+ (Working On UI(Not Proper UI))
 
 (App Demo Link is in the Description)
